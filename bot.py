@@ -282,7 +282,9 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler('goroskop', start_conv),
-            CommandHandler('natal_chart', start_conv),  # Changed from 'натальная_карта' to 'natal_chart'
+            # Remove the problematic Cyrillic command that's causing the error
+            # CommandHandler('натальная_карта', start_conv), <- This line is causing the error
+            CommandHandler('natal_chart', start_conv),  # Use Latin characters only
             MessageHandler(Filters.regex('^(натальная карта|гороскоп)$'), start_conv)
         ],
         states={
