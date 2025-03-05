@@ -282,7 +282,7 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler('goroskop', start_conv),
-            CommandHandler('натальная_карта', start_conv),
+            CommandHandler('natal_chart', start_conv),  # Changed from 'натальная_карта' to 'natal_chart'
             MessageHandler(Filters.regex('^(натальная карта|гороскоп)$'), start_conv)
         ],
         states={
@@ -294,7 +294,7 @@ def main() -> None:
         fallbacks=[MessageHandler(Filters.regex('^(отмена|Отмена|/cancel)$'), cancel)]
     )
     dp.add_handler(conv_handler)
-    # Дополнительно, перенаправляем /start на начало диалога (на случай, если пользователь введет /start)
+    # Дополнительно, перенаправляем /start на начало диалога
     dp.add_handler(CommandHandler('start', start_conv))
     # Запускаем бота
     updater.start_polling()
