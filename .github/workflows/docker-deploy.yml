@@ -39,10 +39,13 @@ jobs:
           script: |
             # Pull the latest image from Docker Hub
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/natal-carts-bot:latest
+            
             # Stop and remove the existing container if it exists
             docker stop natal-carts-bot || true
             docker rm natal-carts-bot || true
-            # Run the new container in detached mode
-            docker run -d --restart unless-stopped --name natal-carts-bot \
-                      -e TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} \
-                      ${{ secrets.DOCKERHUB_USERNAME }}/natal-carts-bot:latest
+            
+            # Run the new container in detached mode with proper formatting
+            docker run -d --restart unless-stopped \
+              --name natal-carts-bot \
+              -e TELEGRAM_TOKEN="${{ secrets.TELEGRAM_TOKEN }}" \
+              ${{ secrets.DOCKERHUB_USERNAME }}/natal-carts-bot:latest
