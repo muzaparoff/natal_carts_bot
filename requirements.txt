@@ -1,0 +1,4 @@
+python-telegram-bot==13.15
+pyswisseph==2.10.3.2
+geopy==2.3.0
+timezonefinder==6.0.1
