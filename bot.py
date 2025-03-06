@@ -33,18 +33,29 @@ def handle_date(update: Update, context: CallbackContext) -> int:
             "Спасибо. Теперь введите время рождения (часы и минуты) в формате ЧЧ:ММ (24-часовой формат)."
         )
         return TIME  # Переходим в состояние TIME
-    except ValueError:
+    except ValueError as e:
         # Если парсинг не удался, просим повторить ввод и логируем ошибку
         print(f"Date parsing error: {e}")
         update.message.reply_text("Пожалуйста, введите дату в правильном формате ДД.ММ.ГГГГ.")
         return DATE
-    except ValueError:
+
+# Добавляем функцию handle_time
+def handle_time(update: Update, context: CallbackContext) -> int:
+    user_data = context.user_data
+    time_text = update.message.text.strip()
+    try:
+        # Парсим время из строки формата ЧЧ:ММ
+        birth_time = datetime.strptime(time_text, "%H:%M")
+        # Сохраняем объект времени (часы и минуты) в user_data
+        user_data['birth_time'] = birth_time
+        # Запрашиваем место рождения
+        update.message.reply_text("Отлично. Теперь укажите место рождения (город и страну).")
+        return PLACE  # Переходим в состояние PLACE
+    except ValueError as e:
         # Если формат неверный, просим повторить
+        print(f"Time parsing error: {e}")
         update.message.reply_text("Время должно быть в формате ЧЧ:ММ, попробуйте еще раз.")
         return TIME
-    # Запрашиваем место рождения
-    update.message.reply_text("Отлично. Теперь укажите место рождения (город и страна).")
-    return PLACE  # Переходим в состояние PLACE
 
 # Обработчик введенного места рождения
 def handle_place(update: Update, context: CallbackContext) -> int:
