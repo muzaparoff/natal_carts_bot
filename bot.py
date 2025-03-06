@@ -28,25 +28,16 @@ def handle_date(update: Update, context: CallbackContext) -> int:
         birth_date = datetime.strptime(date_text, "%d.%m.%Y")
         # Сохраняем дату в user_data
         user_data['birth_date'] = birth_date
-    except ValueError:
-        # Если парсинг не удался, просим повторить ввод
+        # Запрашиваем время рождения
+        update.message.reply_text(
+            "Спасибо. Теперь введите время рождения (часы и минуты) в формате ЧЧ:ММ (24-часовой формат)."
+        )
+        return TIME  # Переходим в состояние TIME
+    except ValueError as e:
+        # Если парсинг не удался, просим повторить ввод и логируем ошибку
+        print(f"Date parsing error: {e}")
         update.message.reply_text("Пожалуйста, введите дату в правильном формате ДД.ММ.ГГГГ.")
         return DATE
-    # Запрашиваем время рождения
-    update.message.reply_text(
-        "Спасибо. Теперь введите время рождения (часы и минуты) в формате ЧЧ:ММ (24-часовой формат)."
-    )
-    return TIME  # Переходим в состояние TIME
-
-# Обработчик введенного времени рождения
-def handle_time(update: Update, context: CallbackContext) -> int:
-    user_data = context.user_data
-    time_text = update.message.text.strip()
-    try:
-        # Парсим время из строки формата ЧЧ:ММ
-        birth_time = datetime.strptime(time_text, "%H:%M")
-        # Сохраняем объект времени (часы и минуты) в user_data
-        user_data['birth_time'] = birth_time
     except ValueError:
         # Если формат неверный, просим повторить
         update.message.reply_text("Время должно быть в формате ЧЧ:ММ, попробуйте еще раз.")
@@ -283,7 +274,7 @@ def main() -> None:
         entry_points=[
             CommandHandler('goroskop', start_conv),
             CommandHandler('natal_chart', start_conv),  # Only Latin characters allowed
-            MessageHandler(Filters.regex('^(натальная карта|гороскоп)$'), start_conv)
+            MessageHandler(Filters.regex('^(татальная карта|гороскоп)$'), start_conv)
         ],
         states={
             DATE: [MessageHandler(Filters.text & ~Filters.command, handle_date)],
