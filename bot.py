@@ -33,7 +33,7 @@ def handle_date(update: Update, context: CallbackContext) -> int:
             "Спасибо. Теперь введите время рождения (часы и минуты) в формате ЧЧ:ММ (24-часовой формат)."
         )
         return TIME  # Переходим в состояние TIME
-    except ValueError as e:
+    except ValueError:
         # Если парсинг не удался, просим повторить ввод и логируем ошибку
         print(f"Date parsing error: {e}")
         update.message.reply_text("Пожалуйста, введите дату в правильном формате ДД.ММ.ГГГГ.")
