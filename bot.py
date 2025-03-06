@@ -296,7 +296,7 @@ def main() -> None:
     dp.add_handler(conv_handler)
     # Дополнительно, перенаправляем /start на начало диалога
     dp.add_handler(CommandHandler('start', start_conv))
-    # Запускаем бота
+    # Запускаем бота 
     updater.start_polling()
     print("Bot started. Press Ctrl+C to stop.")
     updater.idle()
